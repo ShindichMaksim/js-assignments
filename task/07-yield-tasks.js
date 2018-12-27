@@ -33,7 +33,16 @@
  *
  */
 function* get99BottlesOfBeer() {
-    throw new Error('Not implemented');
+	yield '99 bottles of beer on the wall, 99 bottles of beer.'
+	for(let i = 98; i >= 2; i--){
+		yield `Take one down and pass it around, ${i} bottles of beer on the wall.`
+		yield `${i} bottles of beer on the wall, ${i} bottles of beer.`
+	}
+	yield `Take one down and pass it around, 1 bottle of beer on the wall.`
+	yield `1 bottle of beer on the wall, 1 bottle of beer.`
+	yield 'Take one down and pass it around, no more bottles of beer on the wall.'
+	yield 'No more bottles of beer on the wall, no more bottles of beer.'
+	yield 'Go to the store and buy some more, 99 bottles of beer on the wall.'
 }
 
 
@@ -47,7 +56,16 @@ function* get99BottlesOfBeer() {
  *
  */
 function* getFibonacciSequence() {
-    throw new Error('Not implemented');
+	yield 0;
+    yield 1;
+    let num1 = 0;
+    let num2 = 1;
+    while(true){
+        yield num1 + num2;
+        let temp = num2;
+        num2 = num1 + num2;
+        num1 = temp;
+    }
 }
 
 
@@ -82,7 +100,15 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    throw new Error('Not implemented');
+	let res = [root]
+	let length = 0
+	let node
+	while(res.length !== length){
+		node = res[length++]
+		if(node.hasOwnProperty('children'))
+			res.splice(length, 0, ...node.children)
+		yield node
+	}
 }
 
 
@@ -108,7 +134,16 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    throw new Error('Not implemented');
+	let res = [root]
+	let length = 0
+	let node
+	while(res.length !== length){
+		node = res[length++]
+		if(node.hasOwnProperty('children'))
+			for(let el of node.children)
+			res.push(el)
+		yield node
+	}
 }
 
 
@@ -126,7 +161,35 @@ function* breadthTraversalTree(root) {
  *   [ 1, 3, 5, ... ], [ -1 ] => [ -1, 1, 3, 5, ...]
  */
 function* mergeSortedSequences(source1, source2) {
-    throw new Error('Not implemented');
+	var it1 = source1()
+	var it2 = source2()
+	let f
+	let s
+	let fFlag = true
+	let sFlag  = true
+	while(true){
+	if(fFlag)
+		f = it1.next().value
+    if(sFlag)
+		s = it2.next().value
+    if(f === undefined)
+		fFlag = false
+    if(s === undefined)
+		sFlag = false
+    if(fFlag && sFlag){
+		if(f > s){
+			yield s
+			yield f
+		}
+		else {
+			yield f
+			yield s
+		}
+    } else if(fFlag)
+		yield f
+    else if(sFlag)
+		yield s
+	}
 }
 
 
